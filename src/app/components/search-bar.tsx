@@ -55,32 +55,32 @@ export function SearchBar({
           </div>
 
           {/* Grid columns */}
-          <div className="flex items-center gap-2">
+          <div className="hidden md:flex items-center gap-2">
             <label className="text-sm font-medium text-muted-foreground">
               Columnas:
             </label>
             <div className="flex gap-1">
               <Button
-                variant={gridColumns === 1 ? "default" : "outline"}
-                size="sm"
-                onClick={() => onGridColumnsChange(1)}
-                className={gridColumns === 1 ? "bg-primary" : ""}
-              >
-                <LayoutGrid className="h-4 w-4" />
-              </Button>
-              <Button
-                variant={gridColumns === 2 ? "default" : "outline"}
-                size="sm"
-                onClick={() => onGridColumnsChange(2)}
-                className={gridColumns === 2 ? "bg-primary" : ""}
-              >
-                <Grid2x2 className="h-4 w-4" />
-              </Button>
-              <Button
                 variant={gridColumns === 3 ? "default" : "outline"}
                 size="sm"
                 onClick={() => onGridColumnsChange(3)}
                 className={gridColumns === 3 ? "bg-primary" : ""}
+              >
+                <LayoutGrid className="h-4 w-4" />
+              </Button>
+              <Button
+                variant={gridColumns === 4 ? "default" : "outline"}
+                size="sm"
+                onClick={() => onGridColumnsChange(4)}
+                className={gridColumns === 4 ? "bg-primary" : ""}
+              >
+                <Grid2x2 className="h-4 w-4" />
+              </Button>
+              <Button
+                variant={gridColumns === 5 ? "default" : "outline"}
+                size="sm"
+                onClick={() => onGridColumnsChange(5)}
+                className={gridColumns === 5 ? "bg-primary" : ""}
               >
                 <Grid3x3 className="h-4 w-4" />
               </Button>
