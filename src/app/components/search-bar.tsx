@@ -3,6 +3,8 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search, Grid2x2, Grid3x3, LayoutGrid } from "lucide-react";
+import { useDebouncedCallback } from "use-debounce";
+import { useEffect, useState } from "react";
 
 interface SearchBarProps {
   searchTerm: string;
@@ -21,6 +23,21 @@ export function SearchBar({
   gridColumns,
   onGridColumnsChange,
 }: SearchBarProps) {
+  const [localSearch, setLocalSearch] = useState(searchTerm);
+
+  useEffect(() => {
+    setLocalSearch(searchTerm);
+  }, [searchTerm]);
+
+  const debouncedSearch = useDebouncedCallback((value: string) => {
+    onSearchChange(value);
+  }, 500);
+
+  const handleInputChange = (value: string) => {
+    setLocalSearch(value);
+    debouncedSearch(value);
+  };
+
   return (
     <div className="border-b border-border bg-card px-4 py-4 sm:px-6">
       <div className="space-y-4">
@@ -28,9 +45,9 @@ export function SearchBar({
         <div className="relative">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
+            value={localSearch}
             placeholder="Buscar productos..."
-            value={searchTerm}
-            onChange={(e) => onSearchChange(e.target.value)}
+            onChange={(e) => handleInputChange(e.target.value)}
             className="pl-10"
           />
         </div>

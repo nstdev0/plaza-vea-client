@@ -2,7 +2,7 @@ import type React from "react";
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
-import { Providers } from "./providers";
+import { Providers } from "./components/providers/providers";
 
 export const metadata: Metadata = {
   title: "Catálogo de Productos",
@@ -19,11 +19,10 @@ export const metadata: Metadata = {
         media: "(prefers-color-scheme: dark)",
       },
       {
-        url: "/icon.svg",
-        type: "image/svg+xml",
+        url: "/public/icon.ico",
+        type: "image/ico",
       },
     ],
-    apple: "/apple-icon.png",
   },
 };
 

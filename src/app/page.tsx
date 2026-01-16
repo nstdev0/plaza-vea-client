@@ -10,35 +10,66 @@ import { Pagination } from "./components/pagination";
 import { FilterSidebar } from "./components/filter-sidebar";
 import { useQuery } from "@tanstack/react-query";
 import { getProducts } from "./features/products/queries";
-import { IPageableRequest } from "./common/pagination";
 import { ProductGridSkeleton } from "@/app/components/product-grid-skeleton";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
+
 export default function Page() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("");
-  const [selectedPrice, setSelectedPrice] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  // Read state from URL or defaults
+  const searchTerm = searchParams.get("search") || "";
+  const selectedCategory = searchParams.get("category") || "";
+  const selectedPrice = searchParams.get("price") || "";
+  const currentPage = Number(searchParams.get("page")) || 1;
+  const productsPerPage = Number(searchParams.get("pageSize")) || 12;
+
+  // Local state for UI only (sidebar)
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [productsPerPage, setProductsPerPage] = useState(12);
   const [gridColumns, setGridColumns] = useState(3);
 
-  const pageableRequest: IPageableRequest = {
-    page: currentPage,
-    pageSize: productsPerPage,
-    search: searchTerm,
+  // Helper to update URL
+  const updateURL = (params: Record<string, string | number | null>) => {
+    const current = new URLSearchParams(Array.from(searchParams.entries()));
+
+    Object.entries(params).forEach(([key, value]) => {
+      if (value === null || value === "" || value === 0) {
+        current.delete(key);
+      } else {
+        current.set(key, String(value));
+      }
+    });
+
+    const search = current.toString();
+    const query = search ? `?${search}` : "";
+    router.push(`${pathname}${query}`);
   };
 
-  // Real API Data
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ["products", currentPage, productsPerPage, searchTerm],
-    queryFn: () => getProducts(pageableRequest),
+  const { data, isLoading } = useQuery({
+    queryKey: [
+      "products",
+      currentPage,
+      productsPerPage,
+      searchTerm,
+      selectedCategory,
+      selectedPrice,
+    ],
+    queryFn: () => {
+      const params = new URLSearchParams(searchParams.toString());
+      if (!params.has("page")) params.set("page", currentPage.toString());
+      if (!params.has("pageSize"))
+        params.set("pageSize", productsPerPage.toString());
+      return getProducts(params.toString());
+    },
   });
 
-  // Reset to first page when filters change
   const handleFilterChange = (type: string, value: string) => {
-    setCurrentPage(1);
     setSidebarOpen(false);
-    if (type === "category") setSelectedCategory(value);
-    if (type === "price") setSelectedPrice(value);
+    updateURL({
+      page: 1, // Reset to page 1 on filter change
+      [type]: value,
+    });
   };
 
   return (
@@ -77,7 +108,7 @@ export default function Page() {
           />
         )}
         <div
-          className={`fixed left-0 top-[80px] z-50 h-[calc(100vh-80px)] w-64 transform overflow-y-auto bg-card transition-transform duration-300 ease-in-out lg:relative lg:top-0 lg:z-0 lg:translate-x-0 ${
+          className={`fixed left-0 top-20] z-50 h-[calc(100vh-80px)] w-64 transform overflow-y-auto bg-card transition-transform duration-300 ease-in-out lg:relative lg:top-0 lg:z-0 lg:translate-x-0 ${
             sidebarOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >
@@ -95,13 +126,11 @@ export default function Page() {
           <SearchBar
             searchTerm={searchTerm}
             onSearchChange={(val) => {
-              setSearchTerm(val);
-              setCurrentPage(1); // Reset pagination on search
+              updateURL({ search: val, page: 1 });
             }}
             productsPerPage={productsPerPage}
             onProductsPerPageChange={(val) => {
-              setProductsPerPage(val);
-              setCurrentPage(1); // Reset pagination on page size change
+              updateURL({ pageSize: val, page: 1 });
             }}
             gridColumns={gridColumns}
             onGridColumnsChange={setGridColumns}
@@ -120,7 +149,7 @@ export default function Page() {
                   <Pagination
                     currentPage={currentPage}
                     totalPages={data?.totalPages || 1}
-                    onPageChange={setCurrentPage}
+                    onPageChange={(page) => updateURL({ page })}
                   />
                 </div>
               </>
