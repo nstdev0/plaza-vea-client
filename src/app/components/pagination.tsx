@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
 
 interface PaginationProps {
   currentPage: number;
@@ -15,18 +15,41 @@ export function Pagination({
   onPageChange,
 }: PaginationProps) {
   const getPageNumbers = () => {
-    const pages = [];
-    const maxVisible = 5;
-    let start = Math.max(1, currentPage - 2);
-    const end = Math.min(totalPages, start + maxVisible - 1);
+    const pages: (number | string)[] = [];
 
-    if (end - start + 1 < maxVisible) {
-      start = Math.max(1, end - maxVisible + 1);
+    // If total pages is small, show all
+    if (totalPages <= 7) {
+      return Array.from({ length: totalPages }, (_, i) => i + 1);
     }
 
-    for (let i = start; i <= end; i++) {
+    // Always show first page
+    pages.push(1);
+
+    // Calculate dynamic range
+    const siblingCount = 1;
+    const startPage = Math.max(2, currentPage - siblingCount);
+    const endPage = Math.min(totalPages - 1, currentPage + siblingCount);
+
+    // Add left ellipsis
+    if (startPage > 2) {
+      pages.push("...");
+    }
+
+    // Add middle pages
+    for (let i = startPage; i <= endPage; i++) {
       pages.push(i);
     }
+
+    // Add right ellipsis
+    if (endPage < totalPages - 1) {
+      pages.push("...");
+    }
+
+    // Always show last page
+    if (totalPages > 1) {
+      pages.push(totalPages);
+    }
+
     return pages;
   };
 
@@ -41,16 +64,29 @@ export function Pagination({
         <ChevronLeft className="h-4 w-4" />
       </Button>
 
-      {getPageNumbers().map((page) => (
-        <Button
-          key={page}
-          variant={currentPage === page ? "default" : "outline"}
-          size="sm"
-          onClick={() => onPageChange(page)}
-        >
-          {page}
-        </Button>
-      ))}
+      {getPageNumbers().map((page, index) => {
+        if (page === "...") {
+          return (
+            <div
+              key={`ellipsis-${index}`}
+              className="flex h-9 w-9 items-center justify-center"
+            >
+              <MoreHorizontal className="h-4 w-4 text-muted-foreground" />
+            </div>
+          );
+        }
+
+        return (
+          <Button
+            key={page}
+            variant={currentPage === page ? "default" : "outline"}
+            size="sm"
+            onClick={() => onPageChange(page as number)}
+          >
+            {page}
+          </Button>
+        );
+      })}
 
       <Button
         variant="outline"
