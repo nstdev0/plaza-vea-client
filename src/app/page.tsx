@@ -73,9 +73,9 @@ export default function Page() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="flex h-screen w-full flex-col bg-background text-foreground overflow-hidden">
       {/* Header */}
-      <header className="border-b border-border bg-card">
+      <header className="flex-none border-b border-border bg-card">
         <div className="flex items-center justify-between px-4 py-4 sm:px-6">
           <h1 className="text-xl font-bold text-primary sm:text-2xl">
             Catálogo
@@ -99,7 +99,7 @@ export default function Page() {
       </header>
 
       {/* Main Content */}
-      <div className="flex h-[calc(100vh-80px)] flex-col lg:flex-row">
+      <div className="flex flex-1 overflow-hidden lg:flex-row">
         {/* Sidebar - Filters */}
         {sidebarOpen && (
           <div
@@ -108,7 +108,7 @@ export default function Page() {
           />
         )}
         <div
-          className={`fixed left-0 top-20] z-50 h-[calc(100vh-80px)] w-64 transform overflow-y-auto bg-card transition-transform duration-300 ease-in-out lg:relative lg:top-0 lg:z-0 lg:translate-x-0 ${
+          className={`fixed left-0 top-0 z-50 h-full w-64 transform overflow-y-auto bg-card transition-transform duration-300 ease-in-out lg:relative lg:z-0 lg:translate-x-0 ${
             sidebarOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >
@@ -123,18 +123,20 @@ export default function Page() {
         {/* Main Area */}
         <div className="flex flex-1 flex-col overflow-hidden">
           {/* Search Bar & View Options */}
-          <SearchBar
-            searchTerm={searchTerm}
-            onSearchChange={(val) => {
-              updateURL({ search: val, page: 1 });
-            }}
-            productsPerPage={productsPerPage}
-            onProductsPerPageChange={(val) => {
-              updateURL({ pageSize: val, page: 1 });
-            }}
-            gridColumns={gridColumns}
-            onGridColumnsChange={setGridColumns}
-          />
+          <div className="flex-none">
+            <SearchBar
+              searchTerm={searchTerm}
+              onSearchChange={(val) => {
+                updateURL({ search: val, page: 1 });
+              }}
+              productsPerPage={productsPerPage}
+              onProductsPerPageChange={(val) => {
+                updateURL({ pageSize: val, page: 1 });
+              }}
+              gridColumns={gridColumns}
+              onGridColumnsChange={setGridColumns}
+            />
+          </div>
 
           {/* Products Grid with Scroll */}
           <div className="flex flex-1 flex-col overflow-hidden">
@@ -145,7 +147,7 @@ export default function Page() {
                 <ProductGrid products={data?.records} columns={gridColumns} />
 
                 {/* Pagination at bottom */}
-                <div className="border-t border-border bg-card p-4">
+                <div className="flex-none border-t border-border bg-card p-4">
                   <Pagination
                     currentPage={currentPage}
                     totalPages={data?.totalPages || 1}
