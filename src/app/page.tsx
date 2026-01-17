@@ -21,7 +21,6 @@ export default function Page() {
   // Read state from URL or defaults
   const searchTerm = searchParams.get("search") || "";
   const selectedCategory = searchParams.get("category") || "";
-  const selectedPrice = searchParams.get("price") || "";
   const currentPage = Number(searchParams.get("page")) || 1;
   const productsPerPage = Number(searchParams.get("pageSize")) || 12;
 
@@ -53,7 +52,6 @@ export default function Page() {
       productsPerPage,
       searchTerm,
       selectedCategory,
-      selectedPrice,
     ],
     queryFn: () => {
       const params = new URLSearchParams(searchParams.toString());
@@ -114,7 +112,6 @@ export default function Page() {
         >
           <FilterSidebar
             selectedCategory={selectedCategory}
-            selectedPrice={selectedPrice}
             onCategoryChange={(value) => handleFilterChange("category", value)}
             onPriceChange={(value) => handleFilterChange("price", value)}
           />

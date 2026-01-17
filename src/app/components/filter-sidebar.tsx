@@ -4,23 +4,22 @@ import { Button } from "@/components/ui/button";
 
 interface FilterSidebarProps {
   selectedCategory: string;
-  selectedPrice: string;
+  // selectedPrice: string;
   onCategoryChange: (value: string) => void;
   onPriceChange: (value: string) => void;
 }
 
 export function FilterSidebar({
   selectedCategory,
-  selectedPrice,
   onCategoryChange,
-  onPriceChange,
+  // onPriceChange,
 }: FilterSidebarProps) {
-  const categories = ["Electrónica", "Moda", "Hogar", "Deportes"];
-  const priceRanges = [
-    { label: "Hasta $50", value: "low" },
-    { label: "$50 - $150", value: "mid" },
-    { label: "Más de $150", value: "high" },
-  ];
+  // const categories = ["Electrónica", "Moda", "Hogar", "Deportes"];
+  // const priceRanges = [
+  //   { label: "Hasta $50", value: "low" },
+  //   { label: "$50 - $150", value: "mid" },
+  //   { label: "Más de $150", value: "high" },
+  // ];
 
   return (
     <aside className="border-r border-border p-6 lg:w-64">
@@ -37,7 +36,7 @@ export function FilterSidebar({
           >
             Todas
           </Button>
-          {categories.map((cat) => (
+          {/* {categories.map((cat) => (
             <Button
               key={cat}
               variant={selectedCategory === cat ? "default" : "ghost"}
@@ -46,16 +45,16 @@ export function FilterSidebar({
             >
               {cat}
             </Button>
-          ))}
+          ))} */}
         </div>
       </div>
 
       {/* Price */}
-      <div>
+      {/* <div>
         <h3 className="mb-4 text-sm font-semibold uppercase text-muted-foreground">
           Precio
-        </h3>
-        <div className="space-y-2">
+        </h3> */}
+      {/* <div className="space-y-2">
           <Button
             variant={!selectedPrice ? "default" : "ghost"}
             className="w-full justify-start"
@@ -73,8 +72,8 @@ export function FilterSidebar({
               {range.label}
             </Button>
           ))}
-        </div>
-      </div>
+        </div> */}
+      {/* </div> */}
     </aside>
   );
 }
