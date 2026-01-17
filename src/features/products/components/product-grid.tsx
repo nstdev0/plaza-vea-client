@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { Card } from "@/components/ui/card";
-import { ProductRecord } from "@/app/types/Product";
+import { ProductRecord } from "@/features/products/Product";
 
 interface ProductGridProps {
   products: ProductRecord[] | undefined;

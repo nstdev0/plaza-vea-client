@@ -3,15 +3,15 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ThemeToggle } from "./components/theme-toggle";
-import { SearchBar } from "./components/search-bar";
-import { ProductGrid } from "./components/product-grid";
-import { Pagination } from "./components/pagination";
-import { FilterSidebar } from "./components/filter-sidebar";
+import { ThemeToggle } from "../components/theme-toggle";
+import { SearchBar } from "../features/products/components/search-bar";
+import { ProductGrid } from "../features/products/components/product-grid";
+import { Pagination } from "../features/products/components/pagination";
+import { FilterSidebar } from "../features/products/components/filter-sidebar";
 import { useQuery } from "@tanstack/react-query";
-import { getProducts } from "./features/products/queries";
-import { ProductGridSkeleton } from "@/app/components/product-grid-skeleton";
+import { ProductGridSkeleton } from "@/features/products/components/product-grid-skeleton";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
+import { getProducts } from "@/features/products/api/use-get-products";
 
 export default function Page() {
   const router = useRouter();
@@ -132,7 +132,7 @@ export default function Page() {
               }}
               gridColumns={gridColumns}
               onGridColumnsChange={setGridColumns}
-              totalProducts={data ? data.totalData.toString() : "cargando..."}
+              totalProducts={data?.totalData ? data.totalData.toString() : "0"}
             />
           </div>
 

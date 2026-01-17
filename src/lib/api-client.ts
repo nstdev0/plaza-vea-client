@@ -1,4 +1,4 @@
-import { AppConfig } from "../config/conf";
+import { AppConfig } from "@/config/conf";
 
 const BASE_URL = AppConfig.API_URL;
 
