@@ -13,6 +13,7 @@ interface SearchBarProps {
   onProductsPerPageChange: (value: number) => void;
   gridColumns: number;
   onGridColumnsChange: (value: number) => void;
+  totalProducts: string;
 }
 
 export function SearchBar({
@@ -22,6 +23,7 @@ export function SearchBar({
   onProductsPerPageChange,
   gridColumns,
   onGridColumnsChange,
+  totalProducts,
 }: SearchBarProps) {
   const [localSearch, setLocalSearch] = useState(searchTerm);
 
@@ -102,6 +104,11 @@ export function SearchBar({
                 <Grid3x3 className="h-4 w-4" />
               </Button>
             </div>
+          </div>
+          <div>
+            <label className="text-sm font-medium text-muted-foreground">
+              Total productos: {totalProducts}
+            </label>
           </div>
         </div>
       </div>

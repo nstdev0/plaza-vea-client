@@ -132,6 +132,7 @@ export default function Page() {
               }}
               gridColumns={gridColumns}
               onGridColumnsChange={setGridColumns}
+              totalProducts={data ? data.totalData.toString() : "cargando..."}
             />
           </div>
 
