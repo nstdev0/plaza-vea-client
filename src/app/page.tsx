@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "../components/theme-toggle";
 import { SearchBar } from "../features/products/components/search-bar";
 import { ProductGrid } from "../features/products/components/product-grid";
-import { Pagination } from "../features/products/components/pagination";
+import { Pagination } from "../components/ui/pagination";
 import { FilterSidebar } from "../features/products/components/filter-sidebar";
 import { useQuery } from "@tanstack/react-query";
 import { ProductGridSkeleton } from "@/features/products/components/product-grid-skeleton";

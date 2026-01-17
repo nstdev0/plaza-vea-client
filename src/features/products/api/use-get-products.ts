@@ -1,4 +1,4 @@
-import { PaginatedResponse, ProductRecord } from "@/features/products/Product";
+import { PaginatedResponse, ProductRecord } from "@/features/products/types";
 import { ApiFetch } from "@/lib/api-client";
 
 export const getProducts = async (
