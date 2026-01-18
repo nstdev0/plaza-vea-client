@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useRouter, useSearchParams } from "next/navigation";
 
 export function FilterSidebar() {
-  const categories = ["Electrónica", "Moda", "Hogar", "Deportes"];
+  const categories = ["Abarrotes", "Bebidas", "Limpieza", "Congelados"];
   const { sidebarOpen, toggleSidebar } = useSidebar();
   // const priceRanges = [
   //   { label: "Hasta $50", value: "low" },
@@ -16,21 +16,21 @@ export function FilterSidebar() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const handleCategoryChange = (categories: string) => {
+  const handleCategoryChange = (category: string) => {
     const params = new URLSearchParams(searchParams.toString());
 
-    if (categories === "") {
-      params.delete("categories");
-      params.set("page", "1");
+    if (category === "") {
+      params.delete("category");
+      params.delete("page");
       router.push(`?${params.toString()}`);
       return;
     }
 
-    if (params.get("categories") === categories) {
-      params.delete("categories");
+    if (params.get("category") === category) {
+      params.delete("category");
     } else {
-      params.set("categories", categories);
-      params.set("page", "1");
+      params.set("category", category);
+      params.delete("page");
     }
 
     router.replace(`?${params.toString()}`, { scroll: false });
@@ -58,7 +58,7 @@ export function FilterSidebar() {
             </h3>
             <div className="space-y-2">
               <Button
-                variant={!searchParams.get("categories") ? "default" : "ghost"}
+                variant={!searchParams.get("category") ? "default" : "ghost"}
                 className="w-full justify-start"
                 onClick={() => handleCategoryChange("")}
               >
@@ -68,7 +68,7 @@ export function FilterSidebar() {
                 <Button
                   key={cat}
                   variant={
-                    searchParams.get("categories") === cat ? "default" : "ghost"
+                    searchParams.get("category") === cat ? "default" : "ghost"
                   }
                   className="w-full justify-start"
                   onClick={() => handleCategoryChange(cat)}

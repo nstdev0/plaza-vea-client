@@ -2,23 +2,24 @@
 
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
-
-interface PaginationProps {
-  currentPage: number;
-  totalPages: number;
-  onPageChange: (page: number) => void;
-}
+import { useRouter, useSearchParams } from "next/navigation";
 
 export function Pagination({
   currentPage,
   totalPages,
-  onPageChange,
-}: PaginationProps) {
+}: {
+  currentPage: number;
+  totalPages: number;
+}) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const params = new URLSearchParams(searchParams.toString());
+
   const getPageNumbers = () => {
     const pages: (number | string)[] = [];
 
     // If total pages is small, show all
-    if (totalPages <= 7) {
+    if (totalPages <= 5) {
       return Array.from({ length: totalPages }, (_, i) => i + 1);
     }
 
@@ -53,13 +54,23 @@ export function Pagination({
     return pages;
   };
 
+  const onPageChange = (page: number) => {
+    if (page === 1) {
+      params.delete("page");
+    } else {
+      params.set("page", page.toString());
+    }
+    router.push(`?${params.toString()}`);
+  };
+
   return (
-    <div className="flex items-center justify-center gap-1">
+    <div className="flex items-center justify-center gap-2">
       <Button
         variant="outline"
         size="icon"
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
+        className="h-9 w-9"
       >
         <ChevronLeft className="h-4 w-4" />
       </Button>
@@ -80,7 +91,7 @@ export function Pagination({
           <Button
             key={page}
             variant={currentPage === page ? "default" : "outline"}
-            size="sm"
+            className="h-9 w-9 p-0"
             onClick={() => onPageChange(page as number)}
           >
             {page}
@@ -93,6 +104,7 @@ export function Pagination({
         size="icon"
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
+        className="h-9 w-9"
       >
         <ChevronRight className="h-4 w-4" />
       </Button>

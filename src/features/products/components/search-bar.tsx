@@ -35,7 +35,14 @@ export function SearchBar() {
       params.delete("search");
     }
 
-    params.set("page", "1");
+    // Limpiar page=1, pageSize=12 y grid=3 (valores default)
+    params.delete("page");
+    if (params.get("pageSize") === "12") {
+      params.delete("pageSize");
+    }
+    if (params.get("grid") === "3") {
+      params.delete("grid");
+    }
 
     // Usar replace para no ensuciar el historial, scroll: false evita saltos
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });
@@ -50,21 +57,29 @@ export function SearchBar() {
   // 3. Sin Debounce para selectores (acción inmediata)
   const handleProductsPerPageChange = (value: string) => {
     const params = new URLSearchParams(searchParams);
-    if (!params.get("pageSize")) params.set("pageSize", "6");
+    if (params.get("pageSize") === "12") params.delete("pageSize");
 
-    params.set("pageSize", value);
-    params.set("page", "1"); // Resetear página
+    // Al cambiar pageSize, volvemos a la página 1 (borramos page)
+    params.delete("page");
+
+    if (value !== "10") {
+      params.set("pageSize", value);
+    } else {
+      params.delete("pageSize");
+    }
+
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });
   };
 
   const handleGridColumnsChange = (value: number) => {
     const params = new URLSearchParams(searchParams);
-    params.set("gridCols", value.toString());
+    if (value === 3) params.delete("grid");
+    else params.set("grid", value.toString());
     // Aquí NO reseteamos página, es solo visual
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });
   };
 
-  const gridCols = Number(searchParams.get("gridCols") || "3");
+  const gridColumns = Number(searchParams.get("grid") || "3");
 
   return (
     <div className="border-b border-border bg-card px-4 py-4 sm:px-6">
@@ -88,14 +103,15 @@ export function SearchBar() {
               Mostrar:
             </label>
             <select
-              value={searchParams.get("pageSize") || "6"}
+              value={searchParams.get("pageSize") || "12"}
               onChange={(e) => handleProductsPerPageChange(e.target.value)}
               className="h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
             >
-              <option value="6">6</option>
-              <option value="12">12</option>
-              <option value="24">24</option>
-              <option value="48">48</option>
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="30">30</option>
+              <option value="40">40</option>
+              <option value="50">50</option>
             </select>
           </div>
 
@@ -106,7 +122,7 @@ export function SearchBar() {
             </label>
             <div className="flex gap-1">
               <Button
-                variant={gridCols === 3 ? "default" : "outline"}
+                variant={gridColumns === 3 ? "default" : "outline"}
                 size="icon"
                 className="h-8 w-8"
                 onClick={() => handleGridColumnsChange(3)}
@@ -114,7 +130,7 @@ export function SearchBar() {
                 <LayoutGrid className="h-4 w-4" />
               </Button>
               <Button
-                variant={gridCols === 4 ? "default" : "outline"}
+                variant={gridColumns === 4 ? "default" : "outline"}
                 size="icon"
                 className="h-8 w-8"
                 onClick={() => handleGridColumnsChange(4)}
@@ -122,7 +138,7 @@ export function SearchBar() {
                 <Grid2x2 className="h-4 w-4" />
               </Button>
               <Button
-                variant={gridCols === 5 ? "default" : "outline"}
+                variant={gridColumns === 5 ? "default" : "outline"}
                 size="icon"
                 className="h-8 w-8"
                 onClick={() => handleGridColumnsChange(5)}

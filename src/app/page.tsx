@@ -8,31 +8,26 @@ import { getProducts } from "@/features/products/api/use-get-products";
 import { FilterSidebar } from "@/features/products/components/filter-sidebar";
 import PageHeader from "@/components/ui/PageHeader";
 import { SearchBar } from "@/features/products/components/search-bar";
+import { Pagination } from "@/components/ui/pagination";
 
 interface PageProps {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+  searchParams: Promise<
+    string | string[][] | Record<string, string> | URLSearchParams
+  >;
 }
 
 export default async function Page({ searchParams }: PageProps) {
   const queryClient = new QueryClient();
 
   const resolvedParams = await searchParams;
+  const params = new URLSearchParams(resolvedParams);
 
-  // 1. Extraer filtros de la URL (Server Side)
-  const searchTerm = resolvedParams.search || "";
-  const selectedCategory = resolvedParams.category || "";
-  const currentPage = Number(resolvedParams.page) || 1;
-  const productsPerPage = Number(resolvedParams.pageSize) || 12;
+  if (params.get("page") === "1") params.delete("page");
+  if (params.get("pageSize") === "10") params.delete("pageSize");
 
-  const params = new URLSearchParams();
-
-  params.set("page", currentPage.toString());
-  params.set("pageSize", productsPerPage.toString());
-
-  if (searchTerm) params.set("search", searchTerm.toString());
-  if (selectedCategory) params.set("category", selectedCategory.toString());
-
-  console.log(params);
+  if (params.get("search")) params.set("search", params.get("search") || "");
+  if (params.get("category"))
+    params.set("category", params.get("category") || "");
 
   // 2. Prefetch (Carga los datos antes de renderizar)
   await queryClient.prefetchQuery({
@@ -77,14 +72,10 @@ export default async function Page({ searchParams }: PageProps) {
               <ProductGrid />
             </HydrationBoundary>
 
-            {/* Pagination at bottom */}
+            {/* Pagination at bottom
             <div className="flex-none border-t border-border bg-card p-4">
-              {/* <Pagination
-                currentPage={currentPage}
-                totalPages={data?.totalPages || 1}
-                onPageChange={(page) => updateURL({ page })}
-              /> */}
-            </div>
+              <Pagination />
+            </div> */}
           </div>
         </div>
       </div>

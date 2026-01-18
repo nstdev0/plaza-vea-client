@@ -4,6 +4,8 @@ const BASE_URL = AppConfig.API_URL;
 
 export async function ApiFetch(url: string) {
   try {
+    console.log("[API-CLIENT]: ", BASE_URL, url);
+
     const res = await fetch(`${BASE_URL}${url}`, {
       headers: {
         "Content-Type": "application/json",

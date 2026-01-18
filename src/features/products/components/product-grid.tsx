@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { getProducts } from "../api/use-get-products";
 import { useQuery } from "@tanstack/react-query";
 import { ProductGridSkeleton } from "./product-grid-skeleton";
+import { Pagination } from "@/components/ui/pagination";
 
 export function ProductGrid() {
   const searchParams = useSearchParams();
@@ -18,7 +19,7 @@ export function ProductGrid() {
     queryFn: () => getProducts(params.toString()),
   });
 
-  const gridCols = Number(searchParams.get("gridCols") || "3");
+  const gridCols = Number(searchParams.get("grid") || "3");
 
   const gridColsClass =
     {
@@ -42,52 +43,60 @@ export function ProductGrid() {
     );
 
   return (
-    <div className="flex-1 overflow-y-auto">
-      <div className={`grid gap-4 p-4 sm:p-6 ${gridColsClass}`}>
-        {data.records.map((product) => (
-          <Card
-            key={product.skuId}
-            className="group overflow-hidden transition-all hover:shadow-lg"
-          >
-            {/* Image Container */}
-            <div className="relative overflow-hidden bg-white">
-              <Image
-                src={product.imageUrl || "/placeholder.svg"}
-                alt={product.name}
-                width={300}
-                height={300}
-                className="h-48 w-full object-contain p-4 transition-transform duration-300 group-hover:scale-110"
-              />
-              {/* <Button
-                variant="ghost"
-                size="icon"
-                className="absolute right-2 top-2 bg-background/80 hover:bg-background"
-              >
-                <Heart className="h-4 w-4" />
-              </Button> */}
-            </div>
-
-            {/* Content */}
-            <div className="p-4">
-              <p className="mb-2 text-sm text-muted-foreground">
-                {product.brand}
-              </p>
-              <h3
-                className="mb-2 text-md font-medium line-clamp-2 min-h-[40px]"
-                title={product.name}
-              >
-                {product.name}
-              </h3>
-
-              {/* Price and CTA */}
-              <div className="flex items-center justify-between">
-                <span className="text-lg font-bold text-primary">
-                  S/ {parseFloat(product.price).toFixed(2)}
-                </span>
+    <div className="flex h-full flex-col overflow-hidden">
+      <div className="flex-1 overflow-y-auto">
+        <div className={`grid gap-4 p-4 sm:p-6 ${gridColsClass}`}>
+          {data.records.map((product) => (
+            <Card
+              key={product.skuId}
+              className="group overflow-hidden transition-all hover:shadow-lg"
+            >
+              {/* Image Container */}
+              <div className="relative overflow-hidden bg-white">
+                <Image
+                  src={product.imageUrl || "/placeholder.svg"}
+                  alt={product.name}
+                  width={300}
+                  height={300}
+                  className="h-48 w-full object-contain p-4 transition-transform duration-300 group-hover:scale-110"
+                />
+                {/* <Button
+                  variant="ghost"
+                  size="icon"
+                  className="absolute right-2 top-2 bg-background/80 hover:bg-background"
+                >
+                  <Heart className="h-4 w-4" />
+                </Button> */}
               </div>
-            </div>
-          </Card>
-        ))}
+
+              {/* Content */}
+              <div className="p-4">
+                <p className="mb-2 text-sm text-muted-foreground">
+                  {product.brand}
+                </p>
+                <h3
+                  className="mb-2 text-md font-medium line-clamp-2 min-h-[40px]"
+                  title={product.name}
+                >
+                  {product.name}
+                </h3>
+
+                {/* Price and CTA */}
+                <div className="flex items-center justify-between">
+                  <span className="text-lg font-bold text-primary">
+                    S/ {parseFloat(product.price).toFixed(2)}
+                  </span>
+                </div>
+              </div>
+            </Card>
+          ))}
+        </div>
+      </div>
+      <div className="border-t border-border bg-card p-4">
+        <Pagination
+          currentPage={data.currentPage}
+          totalPages={data.totalPages}
+        />
       </div>
     </div>
   );
