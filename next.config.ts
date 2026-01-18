@@ -4,7 +4,12 @@ const nextConfig: NextConfig = {
   /* config options here */
   reactCompiler: true,
   images: {
-    domains: ["plazavea.vteximg.com.br"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "plazavea.vteximg.com.br",
+      },
+    ],
   },
 };
 

@@ -33,7 +33,7 @@ export function ProductGrid() {
   if (isLoading) return <ProductGridSkeleton columns={columns} />;
   if (isError) return <div>Error al cargar productos</div>;
 
-  if (!data || data.records.length === 0 || !data.records)
+  if (!data || data.records?.length === 0 || !data.records)
     return (
       <div className="flex-1 overflow-y-auto">
         <div className="flex h-full items-center justify-center p-8">
