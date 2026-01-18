@@ -79,6 +79,22 @@ export function SearchBar() {
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });
   };
 
+  const handleOrderByChange = (value: string) => {
+    const params = new URLSearchParams(searchParams);
+    if (params.get("orderBy") === "relevance") params.delete("orderBy");
+
+    // Al cambiar orderBy, volvemos a la página 1 (borramos page)
+    params.delete("page");
+
+    if (value !== "relevance") {
+      params.set("orderBy", value);
+    } else {
+      params.delete("orderBy");
+    }
+
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+  };
+
   const gridColumns = Number(searchParams.get("grid") || "3");
 
   return (
@@ -112,6 +128,24 @@ export function SearchBar() {
               <option value="30">30</option>
               <option value="40">40</option>
               <option value="50">50</option>
+            </select>
+          </div>
+
+          {/* Order Options */}
+          <div className="flex items-center gap-2">
+            <label className="text-sm font-medium text-muted-foreground whitespace-nowrap">
+              Ordenar por:
+            </label>
+            <select
+              value={searchParams.get("orderBy") || "relevance"}
+              onChange={(e) => handleOrderByChange(e.target.value)}
+              className="h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+            >
+              <option value="relevance">Relevancia</option>
+              <option value="price,asc">Precio: Menor a Mayor</option>
+              <option value="price,desc">Precio: Mayor a Menor</option>
+              <option value="name,asc">Nombre: A-Z</option>
+              <option value="name,desc">Nombre: Z-A</option>
             </select>
           </div>
 

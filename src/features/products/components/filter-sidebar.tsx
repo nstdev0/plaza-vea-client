@@ -5,7 +5,13 @@ import { Button } from "@/components/ui/button";
 import { useRouter, useSearchParams } from "next/navigation";
 
 export function FilterSidebar() {
-  const categories = ["Abarrotes", "Bebidas", "Limpieza", "Congelados"];
+  const categories = [
+    "Abarrotes",
+    "Bebidas",
+    "Limpieza",
+    "Congelados",
+    "Carnes",
+  ];
   const { sidebarOpen, toggleSidebar } = useSidebar();
   // const priceRanges = [
   //   { label: "Hasta $50", value: "low" },
