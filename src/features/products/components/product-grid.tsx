@@ -1,21 +1,38 @@
+"use client";
+
 import Image from "next/image";
 import { Card } from "@/components/ui/card";
-import { ProductRecord } from "@/features/products/types";
+import { useSearchParams } from "next/navigation";
+import { getProducts } from "../api/use-get-products";
+import { useQuery } from "@tanstack/react-query";
+import { ProductGridSkeleton } from "./product-grid-skeleton";
 
-interface ProductGridProps {
-  products: ProductRecord[] | undefined;
-  columns: number;
-}
+export function ProductGrid() {
+  const searchParams = useSearchParams();
 
-export function ProductGrid({ products, columns }: ProductGridProps) {
+  // Sincronizamos el hook con la URL actual
+  const params = new URLSearchParams(searchParams.toString());
+
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["products", params.toString()],
+    queryFn: () => getProducts(params.toString()),
+  });
+
+  const gridCols = Number(searchParams.get("gridCols") || "3");
+
   const gridColsClass =
     {
       3: "sm:grid-cols-3",
       4: "sm:grid-cols-4",
       5: "sm:grid-cols-5 lg:grid-cols-5",
-    }[columns] || "grid-cols-1 sm:grid-cols-3 lg:grid-cols-4";
+    }[gridCols] || "grid-cols-1 sm:grid-cols-3 lg:grid-cols-4";
 
-  if (!products || products.length === 0) {
+  const columns = gridCols;
+
+  if (isLoading) return <ProductGridSkeleton columns={columns} />;
+  if (isError) return <div>Error al cargar productos</div>;
+
+  if (!data || data.records.length === 0 || !data.records)
     return (
       <div className="flex-1 overflow-y-auto">
         <div className="flex h-full items-center justify-center p-8">
@@ -23,12 +40,11 @@ export function ProductGrid({ products, columns }: ProductGridProps) {
         </div>
       </div>
     );
-  }
 
   return (
     <div className="flex-1 overflow-y-auto">
       <div className={`grid gap-4 p-4 sm:p-6 ${gridColsClass}`}>
-        {products.map((product) => (
+        {data.records.map((product) => (
           <Card
             key={product.skuId}
             className="group overflow-hidden transition-all hover:shadow-lg"
