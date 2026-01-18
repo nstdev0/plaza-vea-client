@@ -8,9 +8,9 @@ export function FilterSidebar() {
   const categories = [
     "Abarrotes",
     "Bebidas",
-    "Limpieza",
-    "Congelados",
     "Carnes",
+    "Congelados",
+    "Limpieza",
   ];
   const { sidebarOpen, toggleSidebar } = useSidebar();
   // const priceRanges = [
