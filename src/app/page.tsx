@@ -8,7 +8,6 @@ import { getProducts } from "@/features/products/api/use-get-products";
 import { FilterSidebar } from "@/features/products/components/filter-sidebar";
 import PageHeader from "@/components/ui/PageHeader";
 import { SearchBar } from "@/features/products/components/search-bar";
-import { Pagination } from "@/components/ui/pagination";
 
 interface PageProps {
   searchParams: Promise<
@@ -29,7 +28,6 @@ export default async function Page({ searchParams }: PageProps) {
   if (params.get("category"))
     params.set("category", params.get("category") || "");
 
-  // 2. Prefetch (Carga los datos antes de renderizar)
   await queryClient.prefetchQuery({
     queryKey: ["products", params.toString()],
     queryFn: () => getProducts(params.toString()),
@@ -42,20 +40,7 @@ export default async function Page({ searchParams }: PageProps) {
 
       {/* Main Content */}
       <div className="flex flex-1 overflow-hidden lg:flex-row">
-        {/* Sidebar - Filters */}
-        {/* {sidebarOpen && (
-          <div
-            className="fixed inset-0 z-40 bg-black/50 lg:hidden"
-            onClick={() => setSidebarOpen(false)}
-          />
-        )} */}
-        <div
-        //   className={
-        //     `fixed left-0 top-0 z-50 h-full w-64 transform overflow-y-auto bg-card transition-transform duration-300 ease-in-out lg:relative lg:z-0 lg:translate-x-0 ${
-        //     sidebarOpen ? "translate-x-0" : "-translate-x-full"
-        //   }`
-        // }
-        >
+        <div>
           <FilterSidebar />
         </div>
 
@@ -71,11 +56,6 @@ export default async function Page({ searchParams }: PageProps) {
             <HydrationBoundary state={dehydrate(queryClient)}>
               <ProductGrid />
             </HydrationBoundary>
-
-            {/* Pagination at bottom
-            <div className="flex-none border-t border-border bg-card p-4">
-              <Pagination />
-            </div> */}
           </div>
         </div>
       </div>

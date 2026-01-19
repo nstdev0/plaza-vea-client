@@ -6,7 +6,16 @@ import { ThemeProvider } from "next-themes";
 import SideBarProvider from "@/components/SidebarContext";
 
 export function Providers({ children }: { children: ReactNode }) {
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: 1000 * 60,
+        gcTime: 1000 * 60 * 5,
+        retry: 1,
+        refetchOnWindowFocus: true,
+      },
+    },
+  });
 
   return (
     <QueryClientProvider client={queryClient}>
