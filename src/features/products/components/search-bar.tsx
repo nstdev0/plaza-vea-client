@@ -35,18 +35,18 @@ export function SearchBar() {
       params.delete("search");
     }
 
-    // Limpiar page=1, pageSize=12 y grid=3 (valores default)
+    // Limpiar page=1, pageSize=12 y grid=5 (valores default)
     params.delete("page");
     if (params.get("pageSize") === "12") {
       params.delete("pageSize");
     }
-    if (params.get("grid") === "3") {
+    if (params.get("grid") === "5") {
       params.delete("grid");
     }
 
     // Usar replace para no ensuciar el historial, scroll: false evita saltos
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });
-  }, 500);
+  }, 550);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -73,7 +73,7 @@ export function SearchBar() {
 
   const handleGridColumnsChange = (value: number) => {
     const params = new URLSearchParams(searchParams);
-    if (value === 3) params.delete("grid");
+    if (value === 5) params.delete("grid");
     else params.set("grid", value.toString());
     // Aquí NO reseteamos página, es solo visual
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });
@@ -95,7 +95,7 @@ export function SearchBar() {
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });
   };
 
-  const gridColumns = Number(searchParams.get("grid") || "3");
+  const gridColumns = Number(searchParams.get("grid") || "5");
 
   return (
     <div className="border-b border-border bg-card px-4 py-4 sm:px-6">

@@ -20,14 +20,14 @@ export function ProductGrid() {
     queryFn: () => getProducts(params.toString()),
   });
 
-  const gridCols = Number(searchParams.get("grid") || "3");
+  const gridCols = Number(searchParams.get("grid") || "5");
 
   const gridColsClass =
     {
       3: "sm:grid-cols-3",
       4: "sm:grid-cols-4",
       5: "sm:grid-cols-5 lg:grid-cols-5",
-    }[gridCols] || "grid-cols-1 sm:grid-cols-3 lg:grid-cols-4";
+    }[gridCols] || "grid-cols-1 sm:grid-cols-5 lg:grid-cols-5";
 
   const columns = gridCols;
 
