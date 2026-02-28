@@ -7,6 +7,7 @@ import { getProducts } from "../api/use-get-products";
 import { useQuery } from "@tanstack/react-query";
 import { ProductGridSkeleton } from "./product-grid-skeleton";
 import { Pagination } from "@/components/ui/pagination";
+import { AddToCartButton } from "./add-to-cart-button";
 
 export function ProductGrid() {
   const searchParams = useSearchParams();
@@ -70,22 +71,24 @@ export function ProductGrid() {
               </div>
 
               {/* Content */}
-              <div className="p-4">
+              <div className="p-4 flex flex-col flex-1">
                 <p className="mb-2 text-sm text-muted-foreground">
                   {product.brand}
                 </p>
                 <h3
-                  className="mb-2 text-md font-medium line-clamp-2 min-h-[40px]"
+                  className="mb-2 text-md font-medium line-clamp-2 min-h-[40px] flex-1"
                   title={product.name}
                 >
                   {product.name}
                 </h3>
 
                 {/* Price and CTA */}
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col gap-3 mt-auto">
                   <span className="text-lg font-bold text-primary">
                     S/ {parseFloat(product.price).toFixed(2)}
                   </span>
+
+                  <AddToCartButton product={product} />
                 </div>
               </div>
             </Card>
