@@ -7,7 +7,7 @@ import {
 import { getProducts } from "@/features/products/api/use-get-products";
 import { FilterSidebar } from "@/features/products/components/filter-sidebar";
 import PageHeader from "@/components/ui/PageHeader";
-import { SearchBar } from "@/features/products/components/search-bar";
+import { ViewOptions } from "@/features/products/components/view-options";
 
 interface PageProps {
   searchParams: Promise<
@@ -46,9 +46,9 @@ export default async function Page({ searchParams }: PageProps) {
 
         {/* Main Area */}
         <div className="flex flex-1 flex-col overflow-hidden">
-          {/* Search Bar & View Options */}
+          {/* View Options */}
           <div className="flex-none">
-            <SearchBar />
+            <ViewOptions />
           </div>
 
           {/* Products Grid with Scroll */}

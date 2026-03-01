@@ -52,11 +52,10 @@ export function FilterSidebar() {
         />
       )}
       <div
-        className={`fixed left-0 top-0 z-50 h-full w-64 transform overflow-y-auto bg-card transition-transform duration-300 ease-in-out lg:relative lg:z-0 lg:translate-x-0 ${
-          sidebarOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
+        className={`fixed left-0 top-0 z-50 h-full w-56 transform overflow-y-auto bg-card transition-transform duration-300 ease-in-out lg:relative lg:z-0 lg:translate-x-0 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"
+          }`}
       >
-        <aside className="min-h-full border-r border-border p-6 lg:w-64">
+        <aside className="min-h-full border-r border-border p-6 lg:w-56">
           {/* Categories */}
           <div className="mb-8">
             <h3 className="mb-4 text-sm font-semibold uppercase text-muted-foreground">

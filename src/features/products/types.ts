@@ -21,6 +21,7 @@ export interface ProductRecord {
   imageUrl: string;
   brand: string;
   category: string[];
+  description?: string; // HTML format description
   createdAt: string; // ISO Date String
   updatedAt: string; // ISO Date String
   rawJson: ProductRawData;

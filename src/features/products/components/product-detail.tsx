@@ -68,9 +68,9 @@ export function ProductDetail({ skuId }: { skuId: string }) {
                 </div>
 
                 {/* Adicionales properties de rawJson visuales podrian ir aqui */}
-                {product.rawJson?.description && (
+                {product.description && (
                     <div className="mb-8 prose prose-sm max-w-none text-muted-foreground">
-                        <div dangerouslySetInnerHTML={{ __html: product.rawJson.description }} />
+                        <div dangerouslySetInnerHTML={{ __html: product.description }} />
                     </div>
                 )}
 
