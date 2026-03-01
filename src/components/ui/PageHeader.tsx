@@ -5,6 +5,7 @@ import { Button } from "./button";
 import { Menu, X } from "lucide-react";
 import { useSidebar } from "../SidebarContext";
 import { CartSheet } from "../cart/CartSheet";
+import Link from "next/link";
 
 export default function PageHeader() {
   const { sidebarOpen, toggleSidebar } = useSidebar();
@@ -12,7 +13,9 @@ export default function PageHeader() {
   return (
     <header className="flex-none border-b border-border bg-card">
       <div className="flex items-center justify-between px-4 py-4 sm:px-6">
-        <h1 className="text-xl font-bold text-primary sm:text-2xl">Catálogo</h1>
+        <Link href="/" className="text-xl font-bold text-primary sm:text-2xl">
+          Catálogo
+        </Link>
         <div className="flex items-center gap-2 lg:gap-4">
           <ThemeToggle />
           <CartSheet />

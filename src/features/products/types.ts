@@ -20,6 +20,7 @@ export interface ProductRecord {
   price: string; // Nota: La API lo devuelve como string ("31.9")
   imageUrl: string;
   brand: string;
+  category: string[];
   createdAt: string; // ISO Date String
   updatedAt: string; // ISO Date String
   rawJson: ProductRawData;

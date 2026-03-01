@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { Providers } from "./providers";
+import { ViewTransitions } from "next-view-transitions";
 
 export const metadata: Metadata = {
   title: "Catálogo de Productos",
@@ -24,11 +25,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" suppressHydrationWarning>
-      <body className={`font-sans antialiased`}>
-        <Providers>{children}</Providers>
-        <Analytics />
-      </body>
-    </html>
+    <ViewTransitions>
+      <html lang="es" suppressHydrationWarning>
+        <body className={`font-sans antialiased`}>
+          <Providers>{children}</Providers>
+          <Analytics />
+        </body>
+      </html>
+    </ViewTransitions>
   );
 }

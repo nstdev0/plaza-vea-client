@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { Card } from "@/components/ui/card";
-import { useSearchParams } from "next/navigation";
+import { Link } from "next-view-transitions";
+import { Card } from "@/components/ui/card"; import { useSearchParams } from "next/navigation";
 import { getProducts } from "../api/use-get-products";
 import { useQuery } from "@tanstack/react-query";
 import { ProductGridSkeleton } from "./product-grid-skeleton";
@@ -53,41 +53,43 @@ export function ProductGrid() {
               className="group overflow-hidden transition-all hover:shadow-lg"
             >
               {/* Image Container */}
-              <div className="relative overflow-hidden bg-white">
+              <Link href={`/products/${product.skuId}`} className="block relative overflow-hidden bg-white">
                 <Image
                   src={product.imageUrl || "/placeholder.svg"}
                   alt={product.name}
                   width={300}
                   height={300}
                   className="h-48 w-full object-contain p-4 transition-transform duration-300 group-hover:scale-110"
+                  style={{ viewTransitionName: `product-image-${product.skuId}` }}
                 />
-                {/* <Button
-                  variant="ghost"
-                  size="icon"
-                  className="absolute right-2 top-2 bg-background/80 hover:bg-background"
-                >
-                  <Heart className="h-4 w-4" />
-                </Button> */}
-              </div>
+              </Link>
 
               {/* Content */}
               <div className="p-4 flex flex-col flex-1">
-                <p className="mb-2 text-sm text-muted-foreground">
+                <p
+                  className="mb-2 text-sm text-muted-foreground"
+                  style={{ viewTransitionName: `product-brand-${product.skuId}` }}
+                >
                   {product.brand}
                 </p>
-                <h3
-                  className="mb-2 text-md font-medium line-clamp-2 min-h-[40px] flex-1"
-                  title={product.name}
-                >
-                  {product.name}
-                </h3>
+                <Link href={`/products/${product.skuId}`} className="flex-1 block">
+                  <h3
+                    className="mb-2 text-md font-medium line-clamp-2 min-h-[40px] hover:text-primary transition-colors"
+                    style={{ viewTransitionName: `product-name-${product.skuId}` }}
+                    title={product.name}
+                  >
+                    {product.name}
+                  </h3>
+                </Link>
 
                 {/* Price and CTA */}
                 <div className="flex flex-col gap-3 mt-auto">
-                  <span className="text-lg font-bold text-primary">
+                  <span
+                    className="text-lg font-bold text-primary"
+                    style={{ viewTransitionName: `product-price-${product.skuId}` }}
+                  >
                     S/ {parseFloat(product.price).toFixed(2)}
                   </span>
-
                   <AddToCartButton product={product} />
                 </div>
               </div>
@@ -101,6 +103,6 @@ export function ProductGrid() {
           totalPages={data.totalPages}
         />
       </div>
-    </div>
+    </div >
   );
 }
