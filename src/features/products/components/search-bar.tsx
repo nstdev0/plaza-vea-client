@@ -45,7 +45,7 @@ export function SearchBar() {
     }
 
     // Siempre redirigir a la página principal al buscar
-    router.replace(`/?${params.toString()}`, { scroll: false });
+    router.replace(`/?${params.toString()}`, { scroll: true });
   }, 550);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
